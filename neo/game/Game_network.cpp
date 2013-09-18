@@ -1296,8 +1296,6 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 	if (game->dv2549ProtocolTraced)
 		common->Printf("\nDV2549_RCV_GAM|");
 
-
-
 	int			id, line;
 	idPlayer	*p;
 	idDict		backupSI;

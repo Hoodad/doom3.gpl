@@ -28,3 +28,6 @@ base
 *.manifest
 
 *.unsuccessfulbuild
+
+/build/Win32/Debug/*.ilk
+/build/Win32/Debug/*.map
