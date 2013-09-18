@@ -763,6 +763,7 @@ void idAsyncClient::ProcessUnreliableServerMessage( const idBitMsg &msg )
 			}
 			SendPingResponseToServer( msg.ReadLong() );
 			if (game->dv2549ProtocolTraced) common->Printf("SERVER_UNRELIABLE_MESSAGE_PING |");
+
 			break;
 		}
 		case SERVER_UNRELIABLE_MESSAGE_GAMEINIT: {

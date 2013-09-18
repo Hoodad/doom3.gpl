@@ -4,7 +4,7 @@ if exist "gamex86.dll" (
 :bootup
 timeout /T 1
 echo JARL IS BATMAN
-START "DOOM" "DOOM3.exe"
+START "DOOM" "DOOM3.exe" +disconnect
 cd ..\Dedicated Release
 START "DOOMsrv" "DOOM3.exe" +exec "default.cfg"
 cd ..\Release
