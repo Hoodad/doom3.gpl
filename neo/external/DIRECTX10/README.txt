@@ -1,0 +1,1 @@
+include these files in all directx projects

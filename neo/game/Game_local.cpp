@@ -146,12 +146,45 @@ void TestGameAPI( void ) {
 	testExport = *GetGameAPI( &testImport );
 }
 
+
+// BY JARL LARSSON ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
+
+void idGameLocal::DV2549ProtocolTrace(const char* text)
+{
+	if (strcmp(text,"ProtocolHide")==0)
+	{
+		dv2549ProtocolTraced = false;
+		common->Printf("DV2549_PROTOCOL: trace off");
+	}
+	else if (strcmp(text,"ProtocolTrace")==0)
+	{
+		dv2549ProtocolTraced = true;
+		common->Printf("DV2549_PROTOCOL: trace on");
+	}
+}
+
+void idGameLocal::DV2549AgentActivate(const char* text)
+{
+	if (strcmp(text,"AgentActivate")==0)
+	{
+		dv2549AgentActivated = true;
+		common->Printf("DV2549_AGENT: activated");
+	}
+	else if (strcmp(text,"AgentDeactivate")==0)
+	{
+		dv2549AgentActivated = false;
+		common->Printf("DV2549_AGENT: deactivated");
+	}
+}
+
 /*
 ===========
 idGameLocal::idGameLocal
 ============
 */
 idGameLocal::idGameLocal() {
+	dv2549AgentActivated = false;
+	dv2549ProtocolTraced = false;
 	Clear();
 }
 

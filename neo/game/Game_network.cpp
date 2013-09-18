@@ -1291,7 +1291,13 @@ void idGameLocal::ClientProcessEntityNetworkEventQueue( void ) {
 idGameLocal::ClientProcessReliableMessage
 ================
 */
-void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &msg ) {
+void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &msg ) 
+{
+	if (game->dv2549ProtocolTraced)
+		common->Printf("\nDV2549_RCV_GAM|");
+
+
+
 	int			id, line;
 	idPlayer	*p;
 	idDict		backupSI;
@@ -1302,6 +1308,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 	switch( id ) {
 		case GAME_RELIABLE_MESSAGE_INIT_DECL_REMAP: {
 			InitClientDeclRemap( clientNum );
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_INIT_DECL_REMAP|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_REMAP_DECL: {
@@ -1319,6 +1326,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 				}
 				clientDeclRemap[clientNum][type][index] = decl->Index();
 			}
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_REMAP_DECL|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_SPAWN_PLAYER: {
@@ -1331,6 +1339,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			// fix up the spawnId to match what the server says
 			// otherwise there is going to be a bogus delete/new of the client entity in the first ClientReadFromSnapshot
 			spawnIds[ client ] = spawnId;
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_SPAWN_PLAYER|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_DELETE_ENT: {
@@ -1340,6 +1349,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 				break;
 			}
 			delete entPtr.GetEntity();
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_DELETE_ENT|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_CHAT:
@@ -1349,11 +1359,15 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			msg.ReadString( name, sizeof( name ) );
 			msg.ReadString( text, sizeof( text ) );
 			mpGame.AddChatLine( "%s^0: %s\n", name, text );
+			DV2549AgentActivate(text);
+			DV2549ProtocolTrace(text);
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_CHAT|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_SOUND_EVENT: {
 			snd_evt_t snd_evt = (snd_evt_t)msg.ReadByte();
 			mpGame.PlayGlobalSound( -1, snd_evt );
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_SOUND_EVENT|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_SOUND_INDEX: {
@@ -1362,6 +1376,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 				const idSoundShader *shader = declManager->SoundByIndex( index );
 				mpGame.PlayGlobalSound( -1, SND_COUNT, shader->GetName() );
 			}
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_SOUND_INDEX|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_DB: {
@@ -1370,6 +1385,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			parm1 = msg.ReadByte( );
 			parm2 = msg.ReadByte( );
 			mpGame.PrintMessageEvent( -1, msg_evt, parm1, parm2 );
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_DB|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_EVENT: {
@@ -1392,16 +1408,19 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 				msg.ReadByteAlign();
 				msg.ReadData( event->paramsBuf, event->paramsSize );
 			}
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_EVENT|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_SERVERINFO: {
 			idDict info;
 			msg.ReadDeltaDict( info, NULL );
 			gameLocal.SetServerInfo( info );
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_SERVERINFO|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_RESTART: {
 			MapRestart();
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_RESTART|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_TOURNEYLINE: {
@@ -1411,6 +1430,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 				break;
 			}
 			p->tourneyLine = line;
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_TOURNEYLINE|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_STARTVOTE: {
@@ -1418,6 +1438,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			int clientNum = msg.ReadByte( );
 			msg.ReadString( voteString, sizeof( voteString ) );
 			mpGame.ClientStartVote( clientNum, voteString );
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_STARTVOTE|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_UPDATEVOTE: {
@@ -1425,6 +1446,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			int yesCount = msg.ReadByte( );
 			int noCount = msg.ReadByte( );
 			mpGame.ClientUpdateVote( (idMultiplayerGame::vote_result_t)result, yesCount, noCount );
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_UPDATEVOTE|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_PORTALSTATES: {
@@ -1433,6 +1455,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			for ( int i = 0; i < numPortals; i++ ) {
 				gameRenderWorld->SetPortalState( (qhandle_t) (i+1), msg.ReadBits( NUM_RENDER_PORTAL_BITS ) );
 			}
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_PORTALSTATE|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_PORTAL: {
@@ -1440,18 +1463,22 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			int blockingBits = msg.ReadBits( NUM_RENDER_PORTAL_BITS );
 			assert( portal > 0 && portal <= gameRenderWorld->NumPortals() );
 			gameRenderWorld->SetPortalState( portal, blockingBits );
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_PORTAL|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_STARTSTATE: {
 			mpGame.ClientReadStartState( msg );
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_STARTSTATE|");
 			break;
 		}
 		case GAME_RELIABLE_MESSAGE_WARMUPTIME: {
 			mpGame.ClientReadWarmupTime( msg );
+			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_WARMUPTIME|");
 			break;
 		}
 		default: {
 			Error( "Unknown server->client reliable message: %d", id );
+			if (game->dv2549ProtocolTraced) common->Printf("%d|",id);
 			break;
 		}
 	}

@@ -240,6 +240,10 @@ private:
 //============================================================================
 
 class idGameLocal : public idGame {
+public: // BY JARL LARSSON ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
+	void DV2549ProtocolTrace(const char* text);
+	void DV2549AgentActivate(const char* text);
+	 // ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
 public:
 	idDict					serverInfo;				// all the tunable parameters, like numclients, etc
 	int						numClients;				// pulled from serverInfo and verified
