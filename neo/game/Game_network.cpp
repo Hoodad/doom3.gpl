@@ -1360,6 +1360,12 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			DV2549AgentActivate(text);
 			DV2549ProtocolTrace(text);
 			DV2549PingServer(text);
+
+			common->Printf("Decimal Test %f \n",404.001f);
+			common->Printf("Integer Test %d \n",404);
+			common->Printf("Integer Test %d \n",405);
+			common->Printf("String Test %s \n", "ArrayOfChars");
+
 			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_CHAT|");
 			break;
 		}
