@@ -177,6 +177,13 @@ void idGameLocal::DV2549AgentActivate(const char* text)
 	}
 }
 
+void idGameLocal::DV2549PingServer(const char* text){
+	if(strcmp(text,"Ping")==0){
+		common->Printf("Pinging the server...");
+		common->Printf("Not yet implemented....");
+	}
+}
+
 /*
 ===========
 idGameLocal::idGameLocal

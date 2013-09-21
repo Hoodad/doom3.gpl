@@ -1359,6 +1359,7 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			mpGame.AddChatLine( "%s^0: %s\n", name, text );
 			DV2549AgentActivate(text);
 			DV2549ProtocolTrace(text);
+			DV2549PingServer(text);
 			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_CHAT|");
 			break;
 		}
