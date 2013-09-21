@@ -792,6 +792,9 @@ void idGameLocal::ServerProcessReliableMessage( int clientNum, const idBitMsg &m
 			char name[128];
 			char text[128];
 
+			int value = msg.ReadBits(32);
+			common->Printf("Value received: %i\n",value);
+
 			msg.ReadString( name, sizeof( name ) );
 			msg.ReadString( text, sizeof( text ) );
 
@@ -1354,17 +1357,17 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 		case GAME_RELIABLE_MESSAGE_TCHAT: { // (client should never get a TCHAT though)
 			char name[128];
 			char text[128];
+
+			int receivedValue = msg.ReadBits(32);
+			common->Printf("Client Received Value: %i\n", receivedValue);
+
 			msg.ReadString( name, sizeof( name ) );
 			msg.ReadString( text, sizeof( text ) );
+			
 			mpGame.AddChatLine( "%s^0: %s\n", name, text );
 			DV2549AgentActivate(text);
 			DV2549ProtocolTrace(text);
 			DV2549PingServer(text);
-
-			common->Printf("Decimal Test %f \n",404.001f);
-			common->Printf("Integer Test %d \n",404);
-			common->Printf("Integer Test %d \n",405);
-			common->Printf("String Test %s \n", "ArrayOfChars");
 
 			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_CHAT|");
 			break;
