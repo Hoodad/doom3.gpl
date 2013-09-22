@@ -1305,6 +1305,7 @@ void idGameLocal::ClientProcessEntityNetworkEventQueue( void ) {
 /*
 ================
 idGameLocal::ClientProcessReliableMessage
+CLPÖ
 ================
 */
 void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &msg ) 
@@ -1377,7 +1378,6 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			mpGame.AddChatLine( "%s^0: %s\n", name, text );
 			DV2549AgentActivate(text);
 			DV2549ProtocolTrace(text);
-			DV2549PingServer(text);
 
 			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_CHAT|");
 			break;
@@ -1498,8 +1498,16 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			NetworkPingPacket packet;
 
 			msg.ReadData((void*)&packet,sizeof(NetworkPingPacket));
-			
-			common->Printf("Client Received Value: %i\n", time - packet.startTime);
+
+			int timeDelta = time - packet.startTime;
+
+			if(dv2549Measurements.endToEnd < 0){
+				dv2549Measurements.roundTripPing = timeDelta;
+				dv2549Measurements.endToEnd = dv2549Measurements.roundTripPing/2;
+			}
+			dv2549Measurements.jitter[dv2549Measurements.jitterCount] = timeDelta;
+			dv2549Measurements.jitterCount++;
+
 			break;
 		}
 		default: {

@@ -956,6 +956,12 @@ void idAsyncClient::ProcessReliableServerMessages( void )
 	if (game->dv2549ProtocolTraced)
 		common->Printf("\nDV2549_RCV_ASY|");
 
+	int time = Sys_Milliseconds();
+	int msec = time - realTime;
+	if(game->dv2549AgentActivated){
+		game->DV2549UpdateMeasurment();
+	}
+
 	idBitMsg	msg;
 	byte		msgBuf[MAX_MESSAGE_SIZE];
 	byte		id;

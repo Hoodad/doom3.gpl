@@ -146,9 +146,6 @@ void TestGameAPI( void ) {
 	testExport = *GetGameAPI( &testImport );
 }
 
-
-// BY JARL LARSSON ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
-
 void idGameLocal::DV2549ProtocolTrace(const char* text)
 {
 	if (strcmp(text,"ProtocolHide")==0)
@@ -165,33 +162,53 @@ void idGameLocal::DV2549ProtocolTrace(const char* text)
 
 void idGameLocal::DV2549AgentActivate(const char* text)
 {
-	if (strcmp(text,"AgentActivate")==0)
+	if (!dv2549AgentActivated && strcmp(text,"AgentActivate")==0)
 	{
-		dv2549AgentActivated = true;
-		common->Printf("DV2549_AGENT: activated");
+		dv2549AgentActivated	= true;
+		dv2549Measurements		= DV2549Measurements();
+		common->Printf("DV2549_AGENT: activated\n");		
 	}
-	else if (strcmp(text,"AgentDeactivate")==0)
+	else if (dv2549AgentActivated && strcmp(text,"AgentDeactivate")==0)
 	{
 		dv2549AgentActivated = false;
-		common->Printf("DV2549_AGENT: deactivated");
+		common->Printf("DV2549_AGENT: deactivated\n");
+		common->Printf("Printing out information.\n");
+
+		common->Printf("End-To-End: %i \n", dv2549Measurements.endToEnd);
+		common->Printf("Round trip time: %i \n", dv2549Measurements.roundTripPing);
+		common->Printf("Jitter count: %i \n", dv2549Measurements.jitterCount);
+		common->Printf("All measured ping values.\n");
+		int i;
+		for(i=0; i < dv2549Measurements.jitterCount; i++){
+			common->Printf("Ping: %i \n", dv2549Measurements.jitter[i]);
+		}
+		common->Printf("End of measurements");
 	}
 }
 
-void idGameLocal::DV2549PingServer(const char* text){
-	if(strcmp(text,"Ping")==0){
+void idGameLocal::DV2549SendPingPacket(){
 
-		NetworkPingPacket packet;
-		packet.startTime = time;
+	NetworkPingPacket packet;
+	packet.startTime = time;
 
-		if ( gameLocal.isClient ) {
-			idBitMsg	outMsg;
-			byte		msgBuf[ 256 ];
-			outMsg.Init( msgBuf, sizeof( msgBuf ) );
-			outMsg.WriteByte( GAME_RELIABLE_MESSAGE_DV2549_PING );
-			outMsg.WriteData( (void*)&packet, sizeof(NetworkPingPacket));
-			networkSystem->ClientSendReliableMessage( outMsg );
+	if ( gameLocal.isClient ) {
+		idBitMsg	outMsg;
+		byte		msgBuf[ 256 ];
+		outMsg.Init( msgBuf, sizeof( msgBuf ) );
+		outMsg.WriteByte( GAME_RELIABLE_MESSAGE_DV2549_PING );
+		outMsg.WriteData( (void*)&packet, sizeof(NetworkPingPacket));
+		networkSystem->ClientSendReliableMessage( outMsg );
 
-			common->Printf("Client sending a ping to server...\n");
+		common->Printf("Client sending a ping to server...\n");
+	}
+}
+
+void idGameLocal::DV2549UpdateMeasurment(){
+	if(dv2549AgentActivated){
+		dv2549TimeSinceLastPinged += msec;
+		if(dv2549TimeSinceLastPinged > MEASURE_FREQUENCY){
+			dv2549TimeSinceLastPinged = 0;
+			DV2549SendPingPacket();
 		}
 	}
 }
@@ -202,8 +219,9 @@ idGameLocal::idGameLocal
 ============
 */
 idGameLocal::idGameLocal() {
-	dv2549AgentActivated = false;
-	dv2549ProtocolTraced = false;
+	dv2549AgentActivated		= false;
+	dv2549ProtocolTraced		= false;
+	dv2549TimeSinceLastPinged	= 0;
 	Clear();
 }
 

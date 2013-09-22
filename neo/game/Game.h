@@ -69,11 +69,36 @@ typedef enum {
 #define TIME_GROUP1		0
 #define TIME_GROUP2		1
 
+
+//////////////////////////////////////////////////////////////////////////
+//Added by Robin Thunstroem
+//////////////////////////////////////////////////////////////////////////
+const static int MEASURE_FREQUENCY = 1000;
+struct DV2549Measurements{
+	int roundTripPing;
+	int endToEnd;
+	int packetVolume;
+	int jitter[1000];
+	int jitterCount;
+
+
+	DV2549Measurements(){
+		roundTripPing = -1;
+		endToEnd = -1;
+		packetVolume = -1;
+		jitterCount = 0;
+	}
+};
+
 class idGame {
 public: // BY JARL LARSSON ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
 	bool dv2549ProtocolTraced;
 	bool dv2549AgentActivated;
 	// ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
+	DV2549Measurements dv2549Measurements;
+public:
+	virtual void				DV2549UpdateMeasurment( void ) {}
+
 public:
 	virtual						~idGame() {}
 

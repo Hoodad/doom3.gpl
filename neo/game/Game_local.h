@@ -253,9 +253,14 @@ class idGameLocal : public idGame {
 public: // BY JARL LARSSON ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
 	void DV2549ProtocolTrace(const char* text);
 	void DV2549AgentActivate(const char* text);
-	void DV2549PingServer(const char* text);
-	 // ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
+	 // ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	//Added by Robin Thunstroem ////////////////////////////////////////////////////////////////////////
+	void DV2549SendPingPacket( void );
+	void DV2549UpdateMeasurment( void );
 public:
+	//Added by Robin Thunstroem ////////////////////////////////////////////////////////////////////////
+	int						dv2549TimeSinceLastPinged;
+
 	idDict					serverInfo;				// all the tunable parameters, like numclients, etc
 	int						numClients;				// pulled from serverInfo and verified
 	idDict					userInfo[MAX_CLIENTS];	// client specific settings

@@ -7,9 +7,9 @@
 
 	This file has been generated with the Type Info Generator v1.0 (c) 2004 id Software
 
-	1125 constants
+	1126 constants
 	122 enums
-	510 classes/structs/unions
+	511 classes/structs/unions
 	36 templates
 	6 max inheritance level for 'idPlayer'
 
@@ -612,6 +612,7 @@ static constantInfo_t constantInfo[] = {
 	{ "int", "ESC_IGNORE", "0" },
 	{ "int", "ESC_MAIN", "1" },
 	{ "int", "ESC_GUI", "2" },
+	{ "const static int", "MEASURE_FREQUENCY", "1000" },
 	{ "int", "TEST_PARTICLE_MODEL", "0" },
 	{ "int", "TEST_PARTICLE_IMPACT", "1" },
 	{ "int", "TEST_PARTICLE_MUZZLE", "2" },
@@ -4697,9 +4698,19 @@ static classVariableInfo_t gameReturn_t_typeInfo[] = {
 	{ NULL, 0 }
 };
 
+static classVariableInfo_t DV2549Measurements_typeInfo[] = {
+	{ "int", "roundTripPing", (int)(&((DV2549Measurements *)0)->roundTripPing), sizeof( ((DV2549Measurements *)0)->roundTripPing ) },
+	{ "int", "endToEnd", (int)(&((DV2549Measurements *)0)->endToEnd), sizeof( ((DV2549Measurements *)0)->endToEnd ) },
+	{ "int", "packetVolume", (int)(&((DV2549Measurements *)0)->packetVolume), sizeof( ((DV2549Measurements *)0)->packetVolume ) },
+	{ "int[1000]", "jitter", (int)(&((DV2549Measurements *)0)->jitter), sizeof( ((DV2549Measurements *)0)->jitter ) },
+	{ "int", "jitterCount", (int)(&((DV2549Measurements *)0)->jitterCount), sizeof( ((DV2549Measurements *)0)->jitterCount ) },
+	{ NULL, 0 }
+};
+
 static classVariableInfo_t idGame_typeInfo[] = {
 	{ "bool", "dv2549ProtocolTraced", (int)(&((idGame *)0)->dv2549ProtocolTraced), sizeof( ((idGame *)0)->dv2549ProtocolTraced ) },
 	{ "bool", "dv2549AgentActivated", (int)(&((idGame *)0)->dv2549AgentActivated), sizeof( ((idGame *)0)->dv2549AgentActivated ) },
+	{ "DV2549Measurements", "dv2549Measurements", (int)(&((idGame *)0)->dv2549Measurements), sizeof( ((idGame *)0)->dv2549Measurements ) },
 	{ NULL, 0 }
 };
 
@@ -4973,11 +4984,11 @@ static classVariableInfo_t frameLookup_t_typeInfo[] = {
 	{ NULL, 0 }
 };
 
-static classVariableInfo_t class_254_class_254_typeInfo[] = {
-//	{ "const idSoundShader *", "soundShader", (int)(&((class_254::class_254 *)0)->soundShader), sizeof( ((class_254::class_254 *)0)->soundShader ) },
-//	{ "const function_t *", "function", (int)(&((class_254::class_254 *)0)->function), sizeof( ((class_254::class_254 *)0)->function ) },
-//	{ "const idDeclSkin *", "skin", (int)(&((class_254::class_254 *)0)->skin), sizeof( ((class_254::class_254 *)0)->skin ) },
-//	{ "int", "index", (int)(&((class_254::class_254 *)0)->index), sizeof( ((class_254::class_254 *)0)->index ) },
+static classVariableInfo_t class_255_class_255_typeInfo[] = {
+//	{ "const idSoundShader *", "soundShader", (int)(&((class_255::class_255 *)0)->soundShader), sizeof( ((class_255::class_255 *)0)->soundShader ) },
+//	{ "const function_t *", "function", (int)(&((class_255::class_255 *)0)->function), sizeof( ((class_255::class_255 *)0)->function ) },
+//	{ "const idDeclSkin *", "skin", (int)(&((class_255::class_255 *)0)->skin), sizeof( ((class_255::class_255 *)0)->skin ) },
+//	{ "int", "index", (int)(&((class_255::class_255 *)0)->index), sizeof( ((class_255::class_255 *)0)->index ) },
 	{ NULL, 0 }
 };
 
@@ -5326,6 +5337,7 @@ static classVariableInfo_t idEntityPtr_class_type__typeInfo[] = {
 };
 
 static classVariableInfo_t idGameLocal_typeInfo[] = {
+	{ "int", "dv2549TimeSinceLastPinged", (int)(&((idGameLocal *)0)->dv2549TimeSinceLastPinged), sizeof( ((idGameLocal *)0)->dv2549TimeSinceLastPinged ) },
 	{ "idDict", "serverInfo", (int)(&((idGameLocal *)0)->serverInfo), sizeof( ((idGameLocal *)0)->serverInfo ) },
 	{ "int", "numClients", (int)(&((idGameLocal *)0)->numClients), sizeof( ((idGameLocal *)0)->numClients ) },
 	{ "idDict[32]", "userInfo", (int)(&((idGameLocal *)0)->userInfo), sizeof( ((idGameLocal *)0)->userInfo ) },
@@ -8140,6 +8152,7 @@ static classTypeInfo_t classTypeInfo[] = {
 	{ "idAASFile", "", sizeof(idAASFile), idAASFile_typeInfo },
 	{ "idAASFileManager", "", sizeof(idAASFileManager), idAASFileManager_typeInfo },
 	{ "gameReturn_t", "", sizeof(gameReturn_t), gameReturn_t_typeInfo },
+	{ "DV2549Measurements", "", sizeof(DV2549Measurements), DV2549Measurements_typeInfo },
 	{ "idGame", "", sizeof(idGame), idGame_typeInfo },
 	{ "refSound_t", "", sizeof(refSound_t), refSound_t_typeInfo },
 	{ "idGameEdit", "", sizeof(idGameEdit), idGameEdit_typeInfo },
@@ -8170,7 +8183,7 @@ static classTypeInfo_t classTypeInfo[] = {
 	{ "jointInfo_t", "", sizeof(jointInfo_t), jointInfo_t_typeInfo },
 	{ "jointMod_t", "", sizeof(jointMod_t), jointMod_t_typeInfo },
 	{ "frameLookup_t", "", sizeof(frameLookup_t), frameLookup_t_typeInfo },
-//	{ "class_254::class_254", "", sizeof(class_254::class_254), class_254_class_254_typeInfo },
+//	{ "class_255::class_255", "", sizeof(class_255::class_255), class_255_class_255_typeInfo },
 	{ "frameCommand_t", "", sizeof(frameCommand_t), frameCommand_t_typeInfo },
 	{ "animFlags_t", "", sizeof(animFlags_t), animFlags_t_typeInfo },
 	{ "idModelExport", "", sizeof(idModelExport), idModelExport_typeInfo },
