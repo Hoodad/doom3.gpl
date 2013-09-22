@@ -7,9 +7,9 @@
 
 	This file has been generated with the Type Info Generator v1.0 (c) 2004 id Software
 
-	1124 constants
+	1125 constants
 	122 enums
-	509 classes/structs/unions
+	510 classes/structs/unions
 	36 templates
 	6 max inheritance level for 'idPlayer'
 
@@ -799,6 +799,7 @@ static constantInfo_t constantInfo[] = {
 	{ "int", "GAME_RELIABLE_MESSAGE_MENU", "22" },
 	{ "int", "GAME_RELIABLE_MESSAGE_WARMUPTIME", "23" },
 	{ "int", "GAME_RELIABLE_MESSAGE_EVENT", "24" },
+	{ "int", "GAME_RELIABLE_MESSAGE_DV2549_PING", "25" },
 	{ "int", "GAMESTATE_UNINITIALIZED", "0" },
 	{ "int", "GAMESTATE_NOMAP", "1" },
 	{ "int", "GAMESTATE_STARTUP", "2" },
@@ -2091,6 +2092,7 @@ static enumValueInfo_t enum_81_typeInfo[] = {
 	{ "GAME_RELIABLE_MESSAGE_MENU", 22 },
 	{ "GAME_RELIABLE_MESSAGE_WARMUPTIME", 23 },
 	{ "GAME_RELIABLE_MESSAGE_EVENT", 24 },
+	{ "GAME_RELIABLE_MESSAGE_DV2549_PING", 25 },
 	{ NULL, 0 }
 };
 
@@ -5273,6 +5275,11 @@ static classVariableInfo_t idMultiplayerGame_typeInfo[] = {
 	{ NULL, 0 }
 };
 
+static classVariableInfo_t NetworkPingPacket_typeInfo[] = {
+	{ "int", "startTime", (int)(&((NetworkPingPacket *)0)->startTime), sizeof( ((NetworkPingPacket *)0)->startTime ) },
+	{ NULL, 0 }
+};
+
 static classVariableInfo_t entityState_t_typeInfo[] = {
 	{ "int", "entityNumber", (int)(&((entityState_t *)0)->entityNumber), sizeof( ((entityState_t *)0)->entityNumber ) },
 	{ "idBitMsg", "state", (int)(&((entityState_t *)0)->state), sizeof( ((entityState_t *)0)->state ) },
@@ -8190,6 +8197,7 @@ static classTypeInfo_t classTypeInfo[] = {
 	{ "mpPlayerState_t", "", sizeof(mpPlayerState_t), mpPlayerState_t_typeInfo },
 	{ "mpChatLine_t", "", sizeof(mpChatLine_t), mpChatLine_t_typeInfo },
 	{ "idMultiplayerGame", "", sizeof(idMultiplayerGame), idMultiplayerGame_typeInfo },
+	{ "NetworkPingPacket", "", sizeof(NetworkPingPacket), NetworkPingPacket_typeInfo },
 	{ "entityState_t", "", sizeof(entityState_t), entityState_t_typeInfo },
 	{ "snapshot_t", "", sizeof(snapshot_t), snapshot_t_typeInfo },
 	{ "entityNetEvent_t", "", sizeof(entityNetEvent_t), entityNetEvent_t_typeInfo },

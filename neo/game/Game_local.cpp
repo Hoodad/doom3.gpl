@@ -179,8 +179,20 @@ void idGameLocal::DV2549AgentActivate(const char* text)
 
 void idGameLocal::DV2549PingServer(const char* text){
 	if(strcmp(text,"Ping")==0){
-		common->Printf("Pinging the server...");
-		common->Printf("Not yet implemented....");
+
+		NetworkPingPacket packet;
+		packet.startTime = time;
+
+		if ( gameLocal.isClient ) {
+			idBitMsg	outMsg;
+			byte		msgBuf[ 256 ];
+			outMsg.Init( msgBuf, sizeof( msgBuf ) );
+			outMsg.WriteByte( GAME_RELIABLE_MESSAGE_DV2549_PING );
+			outMsg.WriteData( (void*)&packet, sizeof(NetworkPingPacket));
+			networkSystem->ClientSendReliableMessage( outMsg );
+
+			common->Printf("Client sending a ping to server...\n");
+		}
 	}
 }
 

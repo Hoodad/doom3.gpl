@@ -108,6 +108,15 @@ void gameError( const char *fmt, ... );
 #include "Pvs.h"
 #include "MultiplayerGame.h"
 
+
+//////////////////////////////////////////////////////////////////////////
+struct NetworkPingPacket
+{
+	int startTime;
+};
+//////////////////////////////////////////////////////////////////////////
+
+
 //============================================================================
 
 const int MAX_GAME_MESSAGE_SIZE		= 8192;
@@ -166,7 +175,8 @@ enum {
 	GAME_RELIABLE_MESSAGE_STARTSTATE,
 	GAME_RELIABLE_MESSAGE_MENU,
 	GAME_RELIABLE_MESSAGE_WARMUPTIME,
-	GAME_RELIABLE_MESSAGE_EVENT
+	GAME_RELIABLE_MESSAGE_EVENT,
+	GAME_RELIABLE_MESSAGE_DV2549_PING
 };
 
 typedef enum {

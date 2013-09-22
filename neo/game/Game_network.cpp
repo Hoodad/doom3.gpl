@@ -792,9 +792,6 @@ void idGameLocal::ServerProcessReliableMessage( int clientNum, const idBitMsg &m
 			char name[128];
 			char text[128];
 
-			int value = msg.ReadBits(32);
-			common->Printf("Value received: %i\n",value);
-
 			msg.ReadString( name, sizeof( name ) );
 			msg.ReadString( text, sizeof( text ) );
 
@@ -852,6 +849,22 @@ void idGameLocal::ServerProcessReliableMessage( int clientNum, const idBitMsg &m
 				msg.ReadByteAlign();
 				msg.ReadData( event->paramsBuf, event->paramsSize );
 			}
+			break;
+		}
+
+		case GAME_RELIABLE_MESSAGE_DV2549_PING: {
+			idBitMsg	outMsg;
+			byte		msgBuf[ 256 ];
+			NetworkPingPacket packet;
+			msg.ReadData( (void*)&packet, sizeof(NetworkPingPacket) );
+
+			outMsg.Init( msgBuf, sizeof( msgBuf ) );
+			outMsg.WriteByte( GAME_RELIABLE_MESSAGE_DV2549_PING );
+			outMsg.WriteData( (void*)&packet, sizeof(NetworkPingPacket));
+
+
+			networkSystem->ServerSendReliableMessage( -1, outMsg );
+			common->Printf("Server sending Ping request back.\n");
 			break;
 		}
 		default: {
@@ -1026,7 +1039,7 @@ void idGameLocal::ClientReadSnapshot( int clientNum, int sequence, const int gam
 		newBase->state.BeginWriting();
 
 		numBitsRead = msg.GetNumBitsRead();
-
+		
 		deltaMsg.Init( base ? &base->state : NULL, &newBase->state, &msg );
 
 		spawnId = deltaMsg.ReadBits( 32 - GENTITYNUM_BITS );
@@ -1358,9 +1371,6 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 			char name[128];
 			char text[128];
 
-			int receivedValue = msg.ReadBits(32);
-			common->Printf("Client Received Value: %i\n", receivedValue);
-
 			msg.ReadString( name, sizeof( name ) );
 			msg.ReadString( text, sizeof( text ) );
 			
@@ -1482,6 +1492,14 @@ void idGameLocal::ClientProcessReliableMessage( int clientNum, const idBitMsg &m
 		case GAME_RELIABLE_MESSAGE_WARMUPTIME: {
 			mpGame.ClientReadWarmupTime( msg );
 			if (game->dv2549ProtocolTraced) common->Printf("GAME_RELIABLE_MESSAGE_WARMUPTIME|");
+			break;
+		}
+		case GAME_RELIABLE_MESSAGE_DV2549_PING: {
+			NetworkPingPacket packet;
+
+			msg.ReadData((void*)&packet,sizeof(NetworkPingPacket));
+			
+			common->Printf("Client Received Value: %i\n", time - packet.startTime);
 			break;
 		}
 		default: {
