@@ -9,7 +9,7 @@ if exist "gamex86.dll" (
 	START "DOOMsrv" "DOOM3.exe" +exec "default.cfg"
 
 	cd ..\Release
-	START "DOOM" "DOOM3.exe" +disconnect +developer "1" +connect "127.0.0.1"
+	START "DOOM" "DOOM3.exe" +disconnect +developer "1" +connect "127.0.0.1" +com_showfps "1"
 
 	timeout /T 2
 	EXIT

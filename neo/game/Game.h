@@ -73,7 +73,7 @@ typedef enum {
 //////////////////////////////////////////////////////////////////////////
 //Added by Robin Thunstroem
 //////////////////////////////////////////////////////////////////////////
-const static int MEASURE_FREQUENCY = 500;
+const static int MEASURE_FREQUENCY = 1000;
 struct DV2549Measurements{
 	int roundTripPing;
 	int endToEnd;
@@ -97,7 +97,7 @@ public: // BY JARL LARSSON *****************************************************
 	// ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
 	DV2549Measurements dv2549Measurements;
 public:
-	virtual void				DV2549UpdateMeasurment( void ) {}
+	virtual void				DV2549UpdateMeasurment( int deltaTime ) {}
 
 public:
 	virtual						~idGame() {}

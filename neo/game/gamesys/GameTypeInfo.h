@@ -612,7 +612,7 @@ static constantInfo_t constantInfo[] = {
 	{ "int", "ESC_IGNORE", "0" },
 	{ "int", "ESC_MAIN", "1" },
 	{ "int", "ESC_GUI", "2" },
-	{ "const static int", "MEASURE_FREQUENCY", "500" },
+	{ "const static int", "MEASURE_FREQUENCY", "1000" },
 	{ "int", "TEST_PARTICLE_MODEL", "0" },
 	{ "int", "TEST_PARTICLE_IMPACT", "1" },
 	{ "int", "TEST_PARTICLE_MUZZLE", "2" },

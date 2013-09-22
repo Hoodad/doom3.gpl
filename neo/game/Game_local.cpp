@@ -175,19 +175,23 @@ void idGameLocal::DV2549AgentActivate(const char* text)
 		common->Printf("Printing out information.\n");
 
 		common->Printf("End-To-End: %i \n", dv2549Measurements.endToEnd);
-		common->Printf("Round trip time: %i \n", dv2549Measurements.roundTripPing);
-		common->Printf("Ping count: %i \n", dv2549Measurements.jitterCount);
+		//common->Printf("Ping count: %i \n", dv2549Measurements.jitterCount);
 
 		int i;
 		int varianceSum = 0;
 		int standardDeviation;
-		
 		for(i = 0; i < dv2549Measurements.jitterCount; i++){
 			varianceSum += Square(dv2549Measurements.jitter[i]);
 		}
 		standardDeviation = idMath::Sqrt(varianceSum / dv2549Measurements.jitterCount);
 
-		common->Printf("Standard Deviation: %i\n", standardDeviation);
+		common->Printf("Jitter: %i\n", standardDeviation);
+		common->Printf("Round trip time: %i \n", dv2549Measurements.roundTripPing);
+		float freqPerSecond = static_cast<float>(MEASURE_FREQUENCY)/1000.0f;
+		float elapsedTime = freqPerSecond*static_cast<float>(dv2549Measurements.jitterCount);
+		float packetsPerUnit = static_cast<float>(dv2549Measurements.packetVolume) 
+			/ elapsedTime;
+		common->Printf("Packet volume: %f per second \n", packetsPerUnit);
 	}
 }
 
@@ -208,9 +212,10 @@ void idGameLocal::DV2549SendPingPacket(){
 	}
 }
 
-void idGameLocal::DV2549UpdateMeasurment(){
+void idGameLocal::DV2549UpdateMeasurment( int deltaTime ){
 	if(dv2549AgentActivated){
-		dv2549TimeSinceLastPinged += msec;
+		common->Printf("Delta Time? %d \n", time - previousTime);
+		dv2549TimeSinceLastPinged += time - previousTime;
 		if(dv2549TimeSinceLastPinged > MEASURE_FREQUENCY){
 			dv2549TimeSinceLastPinged = 0;
 			DV2549SendPingPacket();

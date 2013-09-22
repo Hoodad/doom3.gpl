@@ -256,7 +256,7 @@ public: // BY JARL LARSSON *****************************************************
 	 // ******************************************************************************************<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	//Added by Robin Thunstroem ////////////////////////////////////////////////////////////////////////
 	void DV2549SendPingPacket( void );
-	void DV2549UpdateMeasurment( void );
+	void DV2549UpdateMeasurment( int deltaTime );
 public:
 	//Added by Robin Thunstroem ////////////////////////////////////////////////////////////////////////
 	int						dv2549TimeSinceLastPinged;

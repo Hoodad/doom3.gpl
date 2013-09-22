@@ -956,12 +956,6 @@ void idAsyncClient::ProcessReliableServerMessages( void )
 	if (game->dv2549ProtocolTraced)
 		common->Printf("\nDV2549_RCV_ASY|");
 
-	int time = Sys_Milliseconds();
-	int msec = time - realTime;
-	if(game->dv2549AgentActivated){
-		game->DV2549UpdateMeasurment();
-	}
-
 	idBitMsg	msg;
 	byte		msgBuf[MAX_MESSAGE_SIZE];
 	byte		id;
@@ -970,6 +964,11 @@ void idAsyncClient::ProcessReliableServerMessages( void )
 
 	while ( channel.GetReliableMessage( msg ) ) {
 		id = msg.ReadByte();
+
+		if(game->dv2549AgentActivated){
+			game->dv2549Measurements.packetVolume++;
+		}
+
 		switch( id ) {
 			case SERVER_RELIABLE_MESSAGE_CLIENTINFO: {
 				int clientNum;
@@ -1760,7 +1759,9 @@ void idAsyncClient::SendReliableGameMessage( const idBitMsg &msg )
 	if ( clientState < CS_INGAME ) {
 		return;
 	}
-
+	if(game->dv2549AgentActivated){
+		game->dv2549Measurements.packetVolume++;
+	}
 	outMsg.Init( msgBuf, sizeof( msgBuf ) );
 	outMsg.WriteByte( CLIENT_RELIABLE_MESSAGE_GAME );
 	outMsg.WriteData( msg.GetData(), msg.GetSize() );
@@ -1818,6 +1819,10 @@ void idAsyncClient::RunFrame( void ) {
 	HandleDownloads();
 
 	gameTimeResidual += msec;
+
+	if(game->dv2549AgentActivated){
+		game->DV2549UpdateMeasurment( msec );
+	}
 
 	// spin in place processing incoming packets until enough time lapsed to run a new game frame
 	do {
