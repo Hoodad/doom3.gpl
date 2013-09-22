@@ -175,7 +175,6 @@ void idGameLocal::DV2549AgentActivate(const char* text)
 		common->Printf("Printing out information.\n");
 
 		common->Printf("End-To-End: %i \n", dv2549Measurements.endToEnd);
-		//common->Printf("Ping count: %i \n", dv2549Measurements.jitterCount);
 
 		int i;
 		int varianceSum = 0;
@@ -214,7 +213,6 @@ void idGameLocal::DV2549SendPingPacket(){
 
 void idGameLocal::DV2549UpdateMeasurment( int deltaTime ){
 	if(dv2549AgentActivated){
-		common->Printf("Delta Time? %d \n", time - previousTime);
 		dv2549TimeSinceLastPinged += time - previousTime;
 		if(dv2549TimeSinceLastPinged > MEASURE_FREQUENCY){
 			dv2549TimeSinceLastPinged = 0;
