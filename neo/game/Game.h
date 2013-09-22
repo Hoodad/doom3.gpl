@@ -73,7 +73,7 @@ typedef enum {
 //////////////////////////////////////////////////////////////////////////
 //Added by Robin Thunstroem
 //////////////////////////////////////////////////////////////////////////
-const static int MEASURE_FREQUENCY = 1000;
+const static int MEASURE_FREQUENCY = 500;
 struct DV2549Measurements{
 	int roundTripPing;
 	int endToEnd;
@@ -85,7 +85,7 @@ struct DV2549Measurements{
 	DV2549Measurements(){
 		roundTripPing = -1;
 		endToEnd = -1;
-		packetVolume = -1;
+		packetVolume = 0;
 		jitterCount = 0;
 	}
 };

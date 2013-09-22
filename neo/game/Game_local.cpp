@@ -176,13 +176,18 @@ void idGameLocal::DV2549AgentActivate(const char* text)
 
 		common->Printf("End-To-End: %i \n", dv2549Measurements.endToEnd);
 		common->Printf("Round trip time: %i \n", dv2549Measurements.roundTripPing);
-		common->Printf("Jitter count: %i \n", dv2549Measurements.jitterCount);
-		common->Printf("All measured ping values.\n");
+		common->Printf("Ping count: %i \n", dv2549Measurements.jitterCount);
+
 		int i;
-		for(i=0; i < dv2549Measurements.jitterCount; i++){
-			common->Printf("Ping: %i \n", dv2549Measurements.jitter[i]);
+		int varianceSum = 0;
+		int standardDeviation;
+		
+		for(i = 0; i < dv2549Measurements.jitterCount; i++){
+			varianceSum += Square(dv2549Measurements.jitter[i]);
 		}
-		common->Printf("End of measurements");
+		standardDeviation = idMath::Sqrt(varianceSum / dv2549Measurements.jitterCount);
+
+		common->Printf("Standard Deviation: %i\n", standardDeviation);
 	}
 }
 
